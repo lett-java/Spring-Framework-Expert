@@ -73,7 +73,8 @@ Brewer.MaskDate = (function() {
 	
 }());
 
-Brewer.Security = ( function() {
+Brewer.Security = (function() {
+	
 	function Security() {
 		this.token = $('input[name=_csrf]').val();
 		this.header = $('input[name=_csrf_header]').val();
@@ -84,8 +85,15 @@ Brewer.Security = ( function() {
 			jqxhr.setRequestHeader(this.header, this.token);
 		}.bind(this));
 	}
-	return Security;	
+	
+	return Security;
+	
 }());
+
+Brewer.formatarMoeda = function(valor) {
+	numeral.locale('pt-br');
+	return numeral(valor).format('0,0.00');
+}
 
 $(function() {
 	var maskMoney = new Brewer.MaskMoney();
@@ -99,10 +107,8 @@ $(function() {
 	
 	var maskDate = new Brewer.MaskDate();
 	maskDate.enable();
-
+	
 	var security = new Brewer.Security();
 	security.enable();
-	
-	
 	
 });
