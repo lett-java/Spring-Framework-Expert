@@ -1,5 +1,4 @@
 package com.algaworks.brewer.model;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -26,6 +25,7 @@ import com.algaworks.brewer.enums.TipoPessoaEnum;
 import com.algaworks.brewer.model.validation.ClienteGroupSequenceProvider;
 import com.algaworks.brewer.model.validation.group.CnpjGroup;
 import com.algaworks.brewer.model.validation.group.CpfGroup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cliente")
@@ -57,6 +57,7 @@ public class Cliente implements Serializable {
 	@Email(message = "E-mail inválido")
 	private String email;
 
+	@JsonIgnore
 	@Embedded
 	private Endereco endereco;
 	
