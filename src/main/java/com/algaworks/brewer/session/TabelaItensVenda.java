@@ -4,18 +4,27 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.annotation.SessionScope;
+import java.util.stream.IntStream;
 
 import com.algaworks.brewer.model.Cerveja;
 import com.algaworks.brewer.model.ItemVenda;
 
-@SessionScope
-@Component
-public class TabelaItensVenda {
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+class TabelaItensVenda {
 	
-	List<ItemVenda> itens = new ArrayList<ItemVenda>();
+	
+	@EqualsAndHashCode.Include
+	private String uuid;
+	
+	private List<ItemVenda> itens = new ArrayList<ItemVenda>();
+	
+	public TabelaItensVenda(String uuid) {
+		this.uuid = uuid;
+	}
 	
 	public BigDecimal getValorTotal() {
 		return itens.stream()
@@ -25,9 +34,7 @@ public class TabelaItensVenda {
 	}
 	
 	public void adicionarItem(Cerveja cerveja, Integer quantidade) {
-		Optional<ItemVenda> itemVendaOptional = itens.stream()
-			.filter(item -> item.getCerveja().equals(cerveja))
-			.findAny();
+		Optional<ItemVenda> itemVendaOptional = buscarItemPorCerveja(cerveja);
 		
 		ItemVenda itemVenda = null;
 		if (itemVendaOptional.isPresent()) {
@@ -41,6 +48,19 @@ public class TabelaItensVenda {
 			itens.add(0, itemVenda);
 		}
 	}
+
+	public void alterarQuantidadeItens(Cerveja cerveja, Integer quantidade) {
+		ItemVenda itemVenda = buscarItemPorCerveja(cerveja).get();
+		itemVenda.setQuantidade(quantidade);
+	}
+	
+	public void excluirItem(Cerveja cerveja) {
+		int indice = IntStream.range(0, itens.size())
+				.filter(item -> itens.get(item).getCerveja().equals(cerveja))
+				.findAny().getAsInt();
+		
+		itens.remove(indice);
+	}
 	
 	public int total() {
 		return itens.size();
@@ -50,4 +70,9 @@ public class TabelaItensVenda {
 		return itens;
 	}
 	
+	private Optional<ItemVenda> buscarItemPorCerveja(Cerveja cerveja) {
+		return itens.stream()
+			.filter(item -> item.getCerveja().equals(cerveja))
+			.findAny();
+	}
 }
