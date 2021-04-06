@@ -37,4 +37,8 @@ public class ItemVenda {
 	@ManyToOne
 	@JoinColumn(name = "codigo_venda")
 	private Venda venda;
+	
+	public BigDecimal getValorTotal() {
+		return valorUnitario.multiply(new BigDecimal(quantidade));
+	}
 }
