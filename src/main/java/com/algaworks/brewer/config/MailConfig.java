@@ -23,7 +23,7 @@ public class MailConfig {
 		mailSender.setHost("smtp.sendgrid.net");
 		mailSender.setPort(587);
 		mailSender.setUsername("apikey");
-		mailSender.setPassword("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");
+		mailSender.setPassword("");
 		
 		Properties props = new Properties();
 		props.put("mail.transport.protocol", "smtp");
