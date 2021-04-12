@@ -22,6 +22,7 @@ import org.springframework.format.datetime.standard.DateTimeFormatterRegistrar;
 import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -53,6 +54,7 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @EnableWebMvc
 @EnableSpringDataWebSupport
 @EnableCaching
+@EnableAsync
 public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 
 	private ApplicationContext applicationContext;
@@ -80,7 +82,6 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 		engine.addDialect(new BrewerDialect());
 		engine.addDialect(new DataAttributeDialect());
 		engine.addDialect(new SpringSecurityDialect());
-		
 		return engine;
 	}
 
@@ -146,7 +147,7 @@ public class WebConfig extends WebMvcConfigurerAdapter implements ApplicationCon
 	}
 	
 	@Bean
-	public DomainClassConverter<?> domainClassConverter() {
+	public DomainClassConverter<FormattingConversionService> domainClassConverter() {
 		return new DomainClassConverter<FormattingConversionService>(mvcConversionService());
 	}
 	

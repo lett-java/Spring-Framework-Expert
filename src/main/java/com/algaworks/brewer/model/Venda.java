@@ -83,18 +83,20 @@ public class Venda {
 		return codigo == null;
 	}
 	
+	public BigDecimal getValorTotalItens() {
+		return getItens().stream()
+				.map(ItemVenda::getValorTotal)
+				.reduce(BigDecimal::add)
+				.orElse(BigDecimal.ZERO);
+	}
+	
 	public void adicionarItens(List<ItemVenda> itens) {
 		this.itens = itens;
 		this.itens.forEach(i -> i.setVenda(this));
 	}
 	
 	public void calcularValorTotal() {
-		BigDecimal valorTotalItens = getItens().stream()
-				.map(ItemVenda::getValorTotal)
-				.reduce(BigDecimal::add)
-				.orElse(BigDecimal.ZERO);
-		
-		this.valorTotal = calcularValorTotal(valorTotalItens, getValorFrete(), getValorDesconto());
+		this.valorTotal = calcularValorTotal(getValorTotalItens(), getValorFrete(), getValorDesconto());
 	}
 	
 

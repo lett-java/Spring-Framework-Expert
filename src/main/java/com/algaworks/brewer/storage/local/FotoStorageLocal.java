@@ -82,6 +82,11 @@ private static final Logger logger = LoggerFactory.getLogger(FotoStorageLocal.cl
 		}
 	}
 	
+	@Override
+	public byte[] recuperarThumbnail(String fotoCerveja) {
+		return recuperar("thumbnail." + fotoCerveja);
+	}
+	
 	private void criarPastas() {
 		try {
 			Files.createDirectories(this.local);
@@ -106,7 +111,5 @@ private static final Logger logger = LoggerFactory.getLogger(FotoStorageLocal.cl
 		}
 		
 		return novoNome;
-		
 	}
-
 }

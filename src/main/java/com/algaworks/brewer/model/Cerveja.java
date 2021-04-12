@@ -225,4 +225,8 @@ public class Cerveja implements Serializable {
 		return true;
 	}
 
+	public boolean temFoto() {
+		return !StringUtils.isEmpty(this.foto);
+	}
+
 }
